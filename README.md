@@ -19,3 +19,22 @@ I use to write a function each time I end up doing a copy+paste of a snippet mor
 
 So I put every utility function I use in my Computer Vision projects in ```imwizard```, my own version of OpenCV Python toolbox. And sincerely, I use it a lot! I have a passion for graphics too, so I always make some logos or banners for my READMEs...don't take it too seriously! it's just a creative caprice.
 
+#### _Desciption_
+
+Here follows a description of the main methods and classes that are so far implemented.
+
+```python 
+def create_contour_mask(c,img):
+``` 
+given an imput contour ```c``` and an image ```img```,returns a mask for the contour.
+
+```python
+def contour_center(c):
+``` 
+given an imput contour ```c```, returns a tuple with the (x,y) coordinates of the contour center.
+
+```python
+def process_contours(cnts,image):
+``` 
+given an imput list of contours ```cnts``` and an image ```image```, returns a dictionary ```obj={"centers":[],"area":[],"masks":[],"mean":[],"std":[]}``` with the center coordinates, areas, masks, mean value and stadard deviation of each contour.
+
