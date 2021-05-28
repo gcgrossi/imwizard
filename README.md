@@ -1,7 +1,7 @@
 # imwizard
 Python utilities for image processing with OpenCV.
 
-<img src="logo.png" width="75%"></img>
+<img src="logo.png" width="85%">
 
 
 #### _Introduction_
