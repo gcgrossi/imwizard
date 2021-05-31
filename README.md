@@ -38,3 +38,38 @@ def process_contours(cnts,image):
 ``` 
 given an imput list of contours ```cnts``` and an image ```image```, returns a dictionary ```obj={"centers":[],"area":[],"masks":[],"mean":[],"std":[]}``` with the center coordinates, areas, masks, mean value and stadard deviation of each contour.
 
+```python
+def mean_std(image,mask):
+``` 
+given an imput image ```image``` and a mask ```mask```,returns the pixel (r,g,b) mean and standard deviation of the masked image in the form of a 2-tuple ```(mean,std)```.
+
+```python
+min_dist(mean1,mean2):
+``` 
+given an imput (r,g,b) color ```mean2``` and a list of (r,g,b) colors ```mean1```, computes the Euclidean distances in the L*a*b* space between each color and returns a 2-tuple 
+```(d,i)``` with distance and index of the minimum.
+
+```python
+def create_shade_square(mean,std,h,w,library="plotly"):
+``` 
+given an input 3-tuple with ```mean``` (r,g,b) values and a 3-tuple with ```std``` (r,g,b) standard deviation, creates a numpy array of shape ```h,w``` mean color ```mean```, linearly distributed between ```mean+/-std```. ```library``` parameter can be set to ```cv2``` in order to generate an output image compatible with OpenCV channel convention (BGR instead of RGB). 
+
+```python
+def plot_shade(mean,std,library="plotly"):
+``` 
+given an input 3-tuple with ```mean``` (r,g,b) values and a 3-tuple with ```std``` (r,g,b) standard deviation, plot a box 300x600 using the image from ```create_shade_square```. ```library``` parameter can be set to ```cv2``` to plot the image with OpenCV.
+
+```python
+show_image_masked(image,mask):
+``` 
+given an imput image ```image``` and a mask ```mask```, plot the masked image with OpenCV.
+
+```python
+scale_image(image,scale_percent=60):
+``` 
+given an imput image ```image``` rescale the image by ```scale_percent```. Default is 60% rescaling.
+
+```python
+def manual_thresholder(image):  
+```
+given an imput image ```image```, create an OpenCV image with trackbars that control the thresholding level of the image. When ```x``` key is pressed, a mask with the thresholded region is returned. 
