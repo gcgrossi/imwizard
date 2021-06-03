@@ -78,7 +78,7 @@ given an imput image ```image```, create an OpenCV image with trackbars that con
 class SquareSelector():
   def __init__(self,image):
 ```
-shows the input image and writes rectangles on user selected areas when the ```square_selector()``` function is called. After all the areas are selected, pressing the ```c``` key validates the selection and a mask with the selected areas are returned. Built-in undo logic to revert changes: pressing the ```r``` key reverts the last change made. Pressing ```r``` n-times will revert to the nth previous change made.
+shows the input image and writes rectangles on user selected areas when the ```square_selector()``` function is called. After all the areas are selected, pressing the ```c``` key validates the selection and a 2-tuple with ```(mask,bounding_box)``` with the selected areas and coordinates are returned. Built-in undo logic to revert changes: pressing the ```r``` key reverts the last change made. Pressing ```r``` n-times will revert to the nth previous change made.
 
 ```python
 class ColorFilter():  
