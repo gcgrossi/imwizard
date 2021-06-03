@@ -73,3 +73,17 @@ given an imput image ```image``` rescale the image by ```scale_percent```. Defau
 def manual_thresholder(image):  
 ```
 given an imput image ```image```, create an OpenCV image with trackbars that control the thresholding level of the image. When ```x``` key is pressed, a mask with the thresholded region is returned. 
+
+```python
+class SquareSelector():
+  def __init__(self,image):
+```
+shows the input image and writes rectangles on user selected areas when the ```square_selector()``` function is called. After all the areas are selected, pressing the ```c``` key validates the selection and a mask with the selected areas are returned. Built-in undo logic to revert changes: pressing the ```r``` key reverts the last change made. Pressing ```r``` n-times will revert to the nth previous change made.
+
+```python
+class ColorFilter():  
+  def __init__(self,image):
+```
+shows the input image with trackbars ```(rmin,gmin,bmin)``` and ```(rmax,gmax,bmax)``` when the ```color_filter()``` function is called. The trackbars values allow to filter the image by selecting only the rgb values between the trackbar values. Pressing the ```q``` key validates the selection and a list ```[(rmin, gmin, bmin), (rmax, gmax, bmax)]``` is returned.
+
+
