@@ -44,7 +44,7 @@ def mean_std(image,mask):
 
 def min_dist(mean1,mean2):
     # - Find the minimum distance in the L*a*b* space
-    #   between a color (1st input) and a set of colors (2nd input)
+    #   between a color (2nd input) and a set of colors (1st input)
     # - Returns a tuple with distance and index of the minimum 
    
     # convert to lab
@@ -227,11 +227,12 @@ class SquareSelector():
         #copy original image to handle reset
         self.clone = image.copy()
         
-        # original image and masks are stored into lists
+        # original image, masks and box are stored into lists
         # handles undo operations by returning only the 
         # last component
         self.image = [image.copy()]
-        self.mask = [np.zeros(image.shape[:2]+(1,), dtype="uint8")]
+        self.mask =  [np.zeros(image.shape[:2]+(1,), dtype="uint8")]
+        self.bbox =  []
         
         # initialize the cropping points and flag
         self.pt = []
@@ -256,6 +257,7 @@ class SquareSelector():
             # pushes to the images list to handle undo
             self.image.append(self.image[-1].copy())
             self.mask.append(self.mask[-1].copy())
+            self.bbox.append((self.pt[0],self.pt[1]))
             
             # draw a rectangle around the region of interest
             cv2.rectangle(self.image[-1], self.pt[0], self.pt[1], (0, 255, 0), 2)
@@ -287,6 +289,7 @@ class SquareSelector():
             if key == ord("r"):
                 del self.image[-1]
                 del self.mask[-1]
+                del self.bbox[-1]
                
             # if f the 'c' key is pressed, break from the loop
             elif key == ord("c"):
@@ -298,7 +301,7 @@ class SquareSelector():
         
         # cleanup
         self.clean() 
-        return self.mask[-1]
+        return (self.mask[-1],self.bbox[-1])
     
 class ColorFilter():
     # - The SquareSelector shows the input image
