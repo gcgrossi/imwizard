@@ -22,12 +22,46 @@ I find it pretty useful when I need to perform bulk annotation of images. I am c
 
 The workflow can be complicated if we have more classes. I.e. we can assign a key to each class and validate each bounding box with the corresponding class. In this tutorial I will write the simplier case possible: the class return only a list of the boxs' coordinates and we will cover point 2. and 3. We can leave the other points and the multiclass case for exercise, or for a future implementation.
 
+#### _Building the Class_
 
+Originally I used a function to show an image with OpenCV, and two mouse call backs to detect the box. The idea is very simple:
 
-#### _Desciption_
+- when you click the mouse record ```(xhigh,yhigh)``` coordinates
+- when you release the mouse record the ```(xlow,low)``` coordinates
+- draw a rectangle on the image with OpenCV
 
-H
+But I was upset because if I made a mistake in drawing a rectangle I had to start the process again. I decided to implement a simple mechanism of undo. For this reason I decided to wrap the original functions in a more handy class. Let's start by defining it:
 
 ```python
-def create_contour_mask(c,img):
+class SquareSelector():
+    # - The SquareSelector shows the input image
+    #   and writes rectangles on user selected areas
+    # - Calling the square_selector functiion returns,
+    #   at the end of the selction, a mask with the 
+    #   selected areas
+    # - Built-in undo logic to revert changes
+    
+    def __init__(self,image):
+        #copy original image to handle reset
+        self.clone = image.copy()
+        
+        # original image, masks and box are stored into lists
+        # handles undo operations by returning only the 
+        # last component
+        self.image = [image.copy()]
+        self.mask =  [np.zeros(image.shape[:2]+(1,), dtype="uint8")]
+        self.bbox =  []
+        
+        # initialize the cropping points
+        self.pt = []
+        return
 ```
+the class take an image as input and create a clone to store as a class member. The input image is stored also in a list. A list of masks is also initialized with an array of zeros of the same shapes of the original image. When then initialize a list of bounding boxes. Those lists are key to the undo mechanism as they behave like a buffer: each time a bounding box selection is performed we will append the last image, mask and bounding box created. When we call for _'Undo'_, we will strip the last component of each list. In this way, by selecting only the last component we will obtain the lastest changes. 
+
+#### _Write a callback to handles mouse actions_
+Let's now write the callback that will process the mouse actions. 
+
+```python
+
+```
+
