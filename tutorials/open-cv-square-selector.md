@@ -26,9 +26,9 @@ The workflow can be complicated if we have more classes. I.e. we can assign a ke
 
 Originally I used a function to show an image with OpenCV, and two mouse call backs to detect the box. The idea is very simple:
 
-- when you click the mouse record ```(xhigh,yhigh)``` coordinates
-- when you release the mouse record the ```(xlow,low)``` coordinates
-- draw a rectangle on the image with OpenCV
+1. when you click the mouse record ```(xhigh,yhigh)``` coordinates
+2. when you release the mouse record the ```(xlow,low)``` coordinates
+3. draw a rectangle on the image with OpenCV
 
 But I was upset because if I made a mistake in drawing a rectangle I had to start the process again. I decided to implement a simple mechanism of undo. For this reason I decided to wrap the original functions in a more handy class. Let's start by defining it:
 
@@ -62,6 +62,75 @@ the class take an image as input and create a clone to store as a class member. 
 Let's now write the callback that will process the mouse actions. 
 
 ```python
+    def click_and_crop(self,event, x, y, flags, param): 
+        # if the left mouse button was clicked, record the starting
+        #( x, y) coordinates and indicate that cropping is being
+        # performed
+        if event == cv2.EVENT_LBUTTONDOWN:
+            self.pt = [(x, y)]
+            self.cropping = True
+        
+        # check to see if the left mouse button was released
+        elif event == cv2.EVENT_LBUTTONUP:
+            #record the ending (x, y) coordinates and indicate that
+            #the cropping operation is finished
+            self.pt.append((x, y))
+            self.cropping = False
+            
+            # pushes to the images list to handle undo
+            self.image.append(self.image[-1].copy())
+            self.mask.append(self.mask[-1].copy())
+            self.bbox.append((self.pt[0],self.pt[1]))
+            
+            # draw a rectangle around the region of interest
+            cv2.rectangle(self.image[-1], self.pt[0], self.pt[1], (0, 255, 0), 2)
+            cv2.rectangle(self.mask[-1],  self.pt[0], self.pt[1], 255,-1)
+            
+            cv2.imshow("image", self.image[-1])
+            return
+```
 
+Let's analyse the code. the function click and crop will be called each time a mouse action happens. If the action is _'Click left button'_ (```cv2.EVENT_LBUTTONDOWN```) the x,y coordinates are stored as a 2-tuple into the corresponing list. When the action is '_Left button released_' (```cv2.EVENT_LBUTTONUP```) different actions take place:
+
+1. the (x,y) coordinates are pushed to the points list and to the bounding box list.
+2. the image and mask list is updated with the copy of the lastest element in the list.
+3. a rectangle is drawn on the latest component of the image and mask list.
+4. Finally the newly updated image (the last component of the list) is shown.
+
+In this way we are sure all the changes will be stored in memory by constantly pushing a list with the modified image and coordinates of the bounding boxes. We need just to write a function to handle the callback. 
+
+#### _Show the image with mouse callback_
+
+```python
+    def square_selector(self):
+        # a mouse callback
+        # passes the mouse actions to the callback
+        cv2.namedWindow("image")
+        cv2.setMouseCallback("image", self.click_and_crop)
+        
+        # keep looping until the 'v' key is pressed
+        while True:
+            # disisplay the last stored image and wait for a keypress
+            cv2.imshow("image", self.image[-1])
+            key = cv2.waitKey(1) & 0xFF
+            
+            # if the 'r' key is pressed, delete the last image/mask
+            # restores the last action performed on image/mask
+            if key == ord("r"):
+                del self.image[-1]
+                del self.mask[-1]
+                del self.bbox[-1]
+               
+            # if f the 'c' key is pressed, break from the loop
+            elif key == ord("v"):
+                break
+                    
+        # show mask for output control
+        cv2.imshow("mask", self.mask[-1])
+        cv2.waitKey(0)
+        
+        # cleanup
+        self.clean() 
+        return (self.mask[-1],self.bbox[-1])
 ```
 
