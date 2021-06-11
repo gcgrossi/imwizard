@@ -161,3 +161,34 @@ img = cv2.imread("path_to_image")
 ss = SquareSelector(image)
 mask,bbox = ss.square_selector()
 ```
+
+Let's use it on this image:
+
+***
+
+<image src="ents.jpg" />
+
+***
+
+It's and artwork of the Ents attacking Isengard. Let's draw some boxes on it.
+
+***
+
+<image src="ents_bound.png" />
+
+***
+
+While drawing the rectangles I made a couple of mistakes, but I could revert them by pressing "_r_". After pressing "_v_" we get the mask:
+
+***
+
+<image src="ents_mask.png" />
+
+***
+
+and the windows are all destroyed. 
+
+#### _Conclusion_
+We ended up with a very simple tool that can be useful in many cases while dealing with image processing and computer vision. The class is meant to be used in prototyping phase as a good helper, to speed up some tedious boiler plate coding. I tried to keep the use case as easy as possible but, as I already told, the class can be complicated to embrace new features and can be integrated with other classes. 
+
+The Palantir, the Seeing-Stone, was the most powerful vision tool on the middle Earth. Stored in the highest room on the Isengard tower, let Saruman see and speak with his dark lord Sauron. One day I'll maybe master all the Computer Vision science and I will make my laptop speaking directly to Sauron through OpenCV! Till that day, I'm just a stupid nerd with some bright imagination.
