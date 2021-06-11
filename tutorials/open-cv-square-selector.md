@@ -1,5 +1,6 @@
 # Build a Simple Bounding Box Annotator with OpenCV and Python
 
+<img src="ents_cover.png" />
 
 
 ### *Introduction*
