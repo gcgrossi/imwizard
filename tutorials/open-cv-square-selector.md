@@ -58,7 +58,7 @@ class SquareSelector():
 ```
 the class take an image as input and create a clone to store as a class member. The input image is stored also in a list. A list of masks is also initialized with an array of zeros of the same shapes of the original image. When then initialize a list of bounding boxes. Those lists are key to the undo mechanism as they behave like a buffer: each time a bounding box selection is performed we will append the last image, mask and bounding box created. When we call for _'Undo'_, we will strip the last component of each list. In this way, by selecting only the last component we will obtain the lastest changes. 
 
-### *Write a callback to handles mouse actions*
+### *Write a callback to handle mouse actions*
 Let's now write the callback that will process the mouse actions. 
 
 ```python
