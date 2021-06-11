@@ -101,6 +101,8 @@ In this way we are sure all the changes will be stored in memory by constantly p
 
 #### _Show the image with mouse callback_
 
+The complete function looks like this:
+
 ```python
     def square_selector(self):
         # a mouse callback
@@ -134,3 +136,28 @@ In this way we are sure all the changes will be stored in memory by constantly p
         return (self.mask[-1],self.bbox[-1])
 ```
 
+Let's break it down in pieces. We first create a new window using OpenCV and name it 'image'. On the window we set mouse callback to be the function we just defined. We then start a infinite loop showing only the last image in the buffer and we wait of a key to be pressed. If the key "_r_" is pressed the "_Undo_" is triggered and the last element stored in the buffer is removed. if the key "_v_" (for validate) is pressed, the loop is stopped, the last image in the buffer is shown. We then call a function called ```clean()``` to reset the session:
+  
+```python
+    def clean(self):
+        # close all open windows and reset original image
+        cv2.destroyAllWindows()
+        self.image = [self.clone.copy()]
+        return
+```
+
+The function will destroy all the windows and re-instantiate the original image. Finally the mask and the bounding boxes are returned.
+
+#### _Usage_
+
+After reading an image with OpenCV, you can initialize and call the selctor function in this way:
+```python
+import cv2
+
+# Load Image and Prepare for processing
+img = cv2.imread("path_to_image")
+
+# Obtain mask and bounding box with a manual region selector
+ss = SquareSelector(image)
+mask,bbox = ss.square_selector()
+```
