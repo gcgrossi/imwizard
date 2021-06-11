@@ -2,7 +2,7 @@
 
 
 
-### _Introduction_
+### *Introduction*
 It happens many times I have to select regions in an image while dealing with Computer vision tasks of different nature: 
 - I need to detect the color of only a particular zone.
 - I need to crop the image.
@@ -22,7 +22,7 @@ I find it pretty useful when I need to perform bulk annotation of images. I am c
 
 The workflow can be complicated if we have more classes. I.e. we can assign a key to each class and validate each bounding box with the corresponding class. In this tutorial I will write the simplier case possible: the class return only a list of the boxs' coordinates and we will cover point 2. and 3. We can leave the other points and the multiclass case for exercise, or for a future implementation.
 
-### _Building the Class_
+### *Building the Class*
 
 Originally I used a function to show an image with OpenCV, and two mouse call backs to detect the box. The idea is very simple:
 
@@ -58,7 +58,7 @@ class SquareSelector():
 ```
 the class take an image as input and create a clone to store as a class member. The input image is stored also in a list. A list of masks is also initialized with an array of zeros of the same shapes of the original image. When then initialize a list of bounding boxes. Those lists are key to the undo mechanism as they behave like a buffer: each time a bounding box selection is performed we will append the last image, mask and bounding box created. When we call for _'Undo'_, we will strip the last component of each list. In this way, by selecting only the last component we will obtain the lastest changes. 
 
-### _Write a callback to handles mouse actions_
+### *Write a callback to handles mouse actions*
 Let's now write the callback that will process the mouse actions. 
 
 ```python
@@ -99,7 +99,7 @@ Let's analyse the code. the function click and crop will be called each time a m
 
 In this way we are sure all the changes will be stored in memory by constantly pushing a list with the modified image and coordinates of the bounding boxes. We need just to write a function to handle the callback. 
 
-### _Show the image with mouse callback_
+### *Show the image with mouse callback*
 
 The complete function looks like this:
 
@@ -148,7 +148,7 @@ Let's break it down in pieces. We first create a new window using OpenCV and nam
 
 The function will destroy all the windows and re-instantiate the original image. Finally the mask and the bounding boxes are returned.
 
-### _Usage_
+### *Usage*
 
 After reading an image with OpenCV, you can initialize and call the selctor function in this way:
 ```python
